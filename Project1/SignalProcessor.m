@@ -18,7 +18,13 @@ plot(Time, FTransform);
 %figure;
 %plot(Time, CenteredFTransform);
 
-save('ChirpFT.txt', 'FTransform', '-ascii');
+Magnitude = abs(FTransform);
+Phase = angle(FTransform);
+
+save('ChirpFT.txt', 'Magnitude', 'Phase', '-ascii');
+
+disp('End of Script: SignalProcessor');   %display to user that processing is finished
+
 
 %{  
     FUNCTION RESEARCH (hooray for F1)

@@ -18,8 +18,8 @@ FT_x = fft(x);
 
 correct_FT_x = fftshift(FT_x);
 
-plot(FT_x)
-figure;
+plot(FT_x, length(FT_x));
+%figure;
 %FT_x(2)        %this is indexing the array
 
 mag = abs(FT_x);
@@ -27,9 +27,9 @@ ph = angle(FT_x);
 
 %QWER = linspace(f-Fs/2: : Fs/2);
 
-plot(f,mag);
-figure;
-plot(f,ph);
+%plot(f,mag);
+%figure;
+%plot(f,ph);
 
 
 
