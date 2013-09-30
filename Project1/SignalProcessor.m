@@ -19,7 +19,7 @@ WavLength = length(InputData);      %amount of data samples
 FreqDomain = zeros([WavLength,1]);           %create array for frequancy domain
 
 for i = 1:WavLength                                     %add in the proper frequency values
-    FreqDomain(i) = ((i - 1)/(WavLength - 1)) * Fs;     %equation given in the 
+    FreqDomain(i) = ((i - 1)/(WavLength - 1)) * Fs;     %equation given in the assignment pdf
 end
 
 
@@ -30,17 +30,10 @@ wavplay(InputData,Fs);
 %perform a fourier transform on the data
 FTransform = fft(InputData);
 
-%get the first half of the fourier transform, since we dont need negative
-%frequencies
-
-%{
-UNCOMMENT IF IT DOESNT WORK
-for j = 1:WavLength/2
-   FTransform(j) = FullFTransform(j);
-end
-%}
-
-plot(FreqDomain, FTransform);
+%plot(FreqDomain, FTransform);
+FTCentered = fftshift(FTransform);
+plot((FreqDomain * 2) - Fs, FTCentered);
+figure;
 
 %find the magnitudes and phase angles of the fourier transform
 Magnitude = abs(FTransform);    
