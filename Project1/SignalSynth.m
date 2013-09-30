@@ -11,12 +11,12 @@ Fs = 8129;                              %sampling frequency
 InputData = load('ChirpFT.txt');        %data loaded from the file
 
 %find length of data
-WavLength = length(InputData);
+WavLength = length(InputData)/3;
 
 %separate the data types
-MagData = InputData(1,1:WavLength);
-PhaData = InputData(2,1:WavLength);
-FreqDomain = InputData(3,1:WavLength);
+MagData = InputData(1:WavLength,1);
+PhaData = InputData((WavLength + 1):(2 * WavLength),1);
+FreqDomain = InputData((WavLength * 2 + 1):(WavLength * 3),1);
 
 %create zero matricies to cut down on execution time
 PartSignal = zeros([WavLength,WavLength]);
@@ -34,14 +34,13 @@ end
 
 for m = 1:WavLength
    TotalSignal = TotalSignal + PartSignal(m,1:WavLength); 
-   NumCheck = NumCheck + PartSignal(m,1);
 end
     
 wavwrite(TotalSignal, 'SynthChirp.wav');
-wavplay(TotalSignal, Fs/2);
+wavplay(TotalSignal, Fs);
 
 %plot the original signal in the time domain
-plot(Time * 2, TotalSignal(1,1:WavLength));
+plot(Time, TotalSignal(1,1:WavLength));
 
 
 

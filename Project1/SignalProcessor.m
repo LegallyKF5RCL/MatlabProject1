@@ -16,10 +16,10 @@ WavFile = 'chirp.wav';
 
 %find/calculate important parameters
 WavLength = length(InputData);      %amount of data samples
-%FreqDomain = 1:WavLength;           %create array for frequancy domain
+FreqDomain = zeros([WavLength,1]);           %create array for frequancy domain
 
-for i = 1:WavLength/2                                     %add in the proper frequency values
-    FreqDomain(i) = ((i - 1)/(WavLength/2 - 1)) * Fs;     %equation given in the 
+for i = 1:WavLength                                     %add in the proper frequency values
+    FreqDomain(i) = ((i - 1)/(WavLength - 1)) * Fs;     %equation given in the 
 end
 
 
@@ -28,14 +28,17 @@ end
 wavplay(InputData,Fs);
 
 %perform a fourier transform on the data
-FullFTransform = fft(InputData);
+FTransform = fft(InputData);
 
 %get the first half of the fourier transform, since we dont need negative
 %frequencies
 
+%{
+UNCOMMENT IF IT DOESNT WORK
 for j = 1:WavLength/2
    FTransform(j) = FullFTransform(j);
 end
+%}
 
 plot(FreqDomain, FTransform);
 
