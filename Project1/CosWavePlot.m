@@ -11,8 +11,8 @@ t = 0:1/Fs:1;
 
 x=A*cos(2*pi*f*t + phase);
 
-%plot(t,x);
-figure;
+plot(t,x);
+%figure;
 
 FT_x = fft(x);
 
@@ -27,7 +27,7 @@ ph = angle(FT_x);
 
 FF = Fs/2 * linspace(0,1,Fs+1);
 
-plot(FF,mag);
+%plot(FF,mag);
 %figure;
 %plot(f,ph);
 

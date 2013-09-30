@@ -10,30 +10,40 @@ clear all;
 Fs = 8129;                              %sampling frequency
 InputData = load('ChirpFT.txt');        %data loaded from the file
 
-%FIND LENGTH OF DATA
-WavLength = length(InputData)/2;
-WavTime = (WavLength-1)/Fs;     %finds the length in time that the wav file is/was
-Time = 0:1/Fs:WavTime;
+%find length of data
+WavLength = length(InputData);
 
-%plot(Time, InputData);     %test plot
+%separate the data types
+MagData = InputData(1,1:WavLength);
+PhaData = InputData(2,1:WavLength);
+FreqDomain = InputData(3,1:WavLength);
 
-MagData = InputData(1:WavLength);
-PhaData = InputData(WavLength+1:WavLength*2);
+%create zero matricies to cut down on execution time
+PartSignal = zeros([WavLength,WavLength]);
+TotalSignal = zeros([1,WavLength]);
 
-%{
-THE FOLLOWING CODE BLOCK DOES NOT WORK AND IS THEREFORE INVALID
+%establish time parameters
+WavTime = ((WavLength-1)/Fs);
+Time = 0:(1/Fs):WavTime;
 
-TotalSignal = 0;
-    
-Frequency = linspace(1,WavLength,WavLength);
+for k = 1:WavLength
+    for n = 1:WavLength
+        PartSignal(k,n) = MagData(k) * sin((FreqDomain(k) * 2 * pi * Time(n)) + PhaData(k));
+    end
+end
 
-for n = 1:WavLength
-    TotalSignal = MagData(n) * sin((n * 2 * pi * Time) + PhaData(n));
+for m = 1:WavLength
+   TotalSignal = TotalSignal + PartSignal(m,1:WavLength); 
+   NumCheck = NumCheck + PartSignal(m,1);
 end
     
 wavwrite(TotalSignal, 'SynthChirp.wav');
-wavplay(TotalSignal, Fs);
-%}
+wavplay(TotalSignal, Fs/2);
+
+%plot the original signal in the time domain
+plot(Time * 2, TotalSignal(1,1:WavLength));
+
+
 
 disp('End of Script: SignalSynth');   %display to user that processing is finished
 

@@ -12,34 +12,44 @@ Fs = 8129;
 WavFile = 'chirp.wav';
 
 %get input
-InputData = wavread(WavFile);
+[InputData] = wavread(WavFile);
 
 %find/calculate important parameters
 WavLength = length(InputData);      %amount of data samples
-FreqDomain = 1:WavLength;           %create array for frequancy domain
+%FreqDomain = 1:WavLength;           %create array for frequancy domain
 
-for i = 1:WavLength                 %add in the proper frequency values
-    FreqDomain(i) = ((i - 1)/(WavLength - 1)) * Fs;     %equation given in the 
+for i = 1:WavLength/2                                     %add in the proper frequency values
+    FreqDomain(i) = ((i - 1)/(WavLength/2 - 1)) * Fs;     %equation given in the 
 end
 
-WavTime = (WavLength-1)/Fs;
-Time = 0:1/Fs:WavTime;
+
+
+%play the data from the .wav file
 wavplay(InputData,Fs);
 
-plot(Time,InputData);
+%perform a fourier transform on the data
+FullFTransform = fft(InputData);
 
+%get the first half of the fourier transform, since we dont need negative
+%frequencies
 
-FTransform = fft(InputData);
-CenteredFTransform = fftshift(FTransform);
+for j = 1:WavLength/2
+   FTransform(j) = FullFTransform(j);
+end
 
 plot(FreqDomain, FTransform);
-%figure;
-%plot(Time, CenteredFTransform);
 
-Magnitude = abs(FTransform);
+%find the magnitudes and phase angles of the fourier transform
+Magnitude = abs(FTransform);    
 Phase = angle(FTransform);
 
-save('ChirpFT.txt', 'Magnitude', 'Phase', '-ascii');
+%save the data
+save('ChirpFT.txt', 'Magnitude', 'Phase', 'FreqDomain', '-ascii');
+
+%plot the original signal in the time domain
+WavTime = (WavLength-1)/Fs;
+Time = 0:1/Fs:WavTime;
+plot(Time, InputData);
 
 disp('End of Script: SignalProcessor');   %display to user that processing is finished
 
