@@ -1,20 +1,38 @@
+%Signal Analyzer
+%Brian McRee
+%9/30/2013
+%The following code is open-source and is published on GitHub under the
+%   user "LegallyKF5RCL", LegallyKF5RCL/MatlabProject1
+
 clc;
 clear all;
 
+%Variables
 Fs = 8129;
-%Time = 0:13128;     %create an array from 0 to 1 using steps equal to the sample period
-
 WavFile = 'chirp.wav';
 
+%get input
 InputData = wavread(WavFile);
-WavTime = (length(InputData)-1)/Fs;
+
+%find/calculate important parameters
+WavLength = length(InputData);      %amount of data samples
+FreqDomain = 1:WavLength;           %create array for frequancy domain
+
+for i = 1:WavLength                 %add in the proper frequency values
+    FreqDomain(i) = ((i - 1)/(WavLength - 1)) * Fs;     %equation given in the 
+end
+
+WavTime = (WavLength-1)/Fs;
 Time = 0:1/Fs:WavTime;
-%wavplay(InputData,Fs);
+wavplay(InputData,Fs);
+
+plot(Time,InputData);
+
 
 FTransform = fft(InputData);
 CenteredFTransform = fftshift(FTransform);
 
-plot(Time, FTransform);
+plot(FreqDomain, FTransform);
 %figure;
 %plot(Time, CenteredFTransform);
 

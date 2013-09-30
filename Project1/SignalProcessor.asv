@@ -1,26 +1,46 @@
+%Signal Analyzer
+%Brian McRee
+%9/30/2013
+%The following code is open-source and is published on GitHub under the
+%   user "LegallyKF5RCL", LegallyKF5RCL/MatlabProject1
+
 clc;
 clear all;
 
 Fs = 8129;
-%Time = 0:13128;     %create an array from 0 to 1 using steps equal to the sample period
-
 WavFile = 'chirp.wav';
 
+%get input
 InputData = wavread(WavFile);
-WavTime = (length(InputData)-1)/Fs;
+
+WavLength = length(InputData);      %amount of data samples
+FreqDomain = 1:WavLength;
+
+for i = 1:WavLength
+    FreqDomain(i) = ((i - 1)/(WavLength - 1)) * Fs;
+end
+
+WavTime = (WavLength-1)/Fs;
 Time = 0:1/Fs:WavTime;
-%wavplay(InputData,Fs);
+wavplay(InputData,Fs);
+
+plot(Time,InputData);
+
 
 FTransform = fft(InputData);
 CenteredFTransform = fftshift(FTransform);
 
-plot(Time, FTransform);
+plot(FreqDomain, FTransform);
 %figure;
 %plot(Time, CenteredFTransform);
 
-save('ChirpFT.txt', 'FTransform', '-ascii');
+Magnitude = abs(FTransform);
+Phase = angle(FTransform);
 
-Loa
+save('ChirpFT.txt', 'Magnitude', 'Phase', '-ascii');
+
+disp('End of Script: SignalProcessor');   %display to user that processing is finished
+
 
 %{  
     FUNCTION RESEARCH (hooray for F1)

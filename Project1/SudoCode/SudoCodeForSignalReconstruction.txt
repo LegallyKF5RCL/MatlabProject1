@@ -1,0 +1,16 @@
+SudoCode for reconstructing signals from fourier transforms in matlab
+Brian McRee
+9/30/2013
+
+~~~GIVEN~~~
+
+an array of magnitudes
+an array of phases
+the length of the array of magnitudes and phases (they will be the same)
+
+~~~ALGORITHM~~~
+
+-start with a null signal
+-for each magnitude and phase
+	-summate the root signal
+		-with the magnitude times the sin of the frequency plus the phase angle
