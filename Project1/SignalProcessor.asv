@@ -1,0 +1,68 @@
+clc;
+clear all;
+
+Fs = 8129;
+%Time = 0:13128;     %create an array from 0 to 1 using steps equal to the sample period
+
+WavFile = 'chirp.wav';
+
+InputData = wavread(WavFile);
+WavTime = (length(InputData)-1)/Fs;
+Time = 0:1/Fs:WavTime;
+%wavplay(InputData,Fs);
+
+FTransform = fft(InputData);
+CenteredFTransform = fftshift(FTransform);
+
+plot(Time, FTransform);
+%figure;
+%plot(Time, CenteredFTransform);
+
+save('ChirpFT.txt', 'FTransform', '-ascii');
+
+Loa
+
+%{  
+    FUNCTION RESEARCH (hooray for F1)
+
+    FFT
+        y = fft(u,M)
+        //where u = to the thing you want to transform
+
+    FFTSHIFT
+        Y = fftshift(X)
+        //this function centers 
+
+    INPUT
+        evalResponse = input(prompt)
+        //acquire user input
+
+    SUBPLOT
+        subplot(m,n,p)
+        //creates axes in tiled positions
+
+    WAVREAD
+        y = wavread(filename)
+        //reads a wav file
+
+    WAVWRITE
+        wavwrite(y,filename)
+        //writes data stored in y to a wave file named filename
+
+    WAVPLAY
+        wavplay(y,Fs)
+        //plays audio signal stored in vector y
+        //Fs is the sample rate in HZ
+
+    SAVE
+        save(filename, variables, ..., format)
+        //save workspace variables to a file
+
+    LOAD
+        S = load(filename,'-ascii')
+        //forces load to treat the file as an ASCII file, regardless of the extension
+
+    LINSPACE
+        y = linspace(a,b,n)
+        //y = linspace(a,b,n) generates a row vector y of n points linearly spaced between and including a and b. For n < 2, linspace returns b.
+%}
